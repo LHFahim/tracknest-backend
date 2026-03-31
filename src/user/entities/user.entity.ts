@@ -61,7 +61,7 @@ export class UserEntity extends DocumentWithTimeStamps {
 
   @Expose()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @IsPhoneNumber()
   @ApiProperty({ required: false })
   @Prop({ required: false, type: String, trim: true })

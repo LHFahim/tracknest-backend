@@ -8,5 +8,6 @@ export enum AuthProvider {
 
 export enum PanelType {
   ADMIN = 'ADMIN',
-  CLIENT = 'CLIENT',
+  STAFF = 'STAFF',
+  NORMAL_USER = 'NORMAL_USER',
 }
