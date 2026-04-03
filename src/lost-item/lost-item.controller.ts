@@ -1,34 +1,65 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Serialize } from 'libraries/serializer/serializer.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Routes } from 'src/common/constant/routes';
+import { ResourceId } from 'src/common/decorator/params.decorator';
+import { UserId } from 'src/common/decorator/user.decorator';
+import { APIVersions } from 'src/common/enum/api-versions.enum';
+import { ControllersEnum } from 'src/common/enum/controllers.enum';
+import {
+  CreateLostItemDto,
+  LostItemQueryDto,
+  UpdateLostItemDto,
+} from './dto/lost-item.dto';
 import { LostItemService } from './lost-item.service';
-import { CreateLostItemDto } from './dto/create-lost-item.dto';
-import { UpdateLostItemDto } from './dto/update-lost-item.dto';
 
-@Controller('lost-item')
+@ApiTags('Lost Item')
+@Serialize()
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
+@Controller({ path: ControllersEnum.LostItem, version: APIVersions.V1 })
 export class LostItemController {
   constructor(private readonly lostItemService: LostItemService) {}
 
-  @Post()
-  create(@Body() createLostItemDto: CreateLostItemDto) {
-    return this.lostItemService.create(createLostItemDto);
+  @Post(Routes[ControllersEnum.LostItem].create)
+  create(
+    @UserId() userId: string,
+    @Body() createLostItemDto: CreateLostItemDto,
+  ) {
+    return this.lostItemService.create(userId, createLostItemDto);
   }
 
-  @Get()
-  findAll() {
-    return this.lostItemService.findAll();
+  @Get(Routes[ControllersEnum.LostItem].findAll)
+  findAll(@UserId() userId: string, @Query() query: LostItemQueryDto) {
+    return this.lostItemService.findAll(userId, query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.lostItemService.findOne(+id);
+  @Get(Routes[ControllersEnum.LostItem].findOne)
+  findOne(@UserId() userId: string, @ResourceId() id: string) {
+    return this.lostItemService.findOne(userId, id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLostItemDto: UpdateLostItemDto) {
-    return this.lostItemService.update(+id, updateLostItemDto);
+  @Patch(Routes[ControllersEnum.LostItem].updateOne)
+  updateOne(
+    @UserId() userId: string,
+    @ResourceId() id: string,
+    @Body() updateLostItemDto: UpdateLostItemDto,
+  ) {
+    return this.lostItemService.updateOne(userId, id, updateLostItemDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.lostItemService.remove(+id);
+  @Delete(Routes[ControllersEnum.LostItem].deleteOne)
+  deleteOne(@UserId() userId: string, @ResourceId() id: string) {
+    return this.lostItemService.deleteOne(userId, id);
   }
 }

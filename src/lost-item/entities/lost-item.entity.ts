@@ -1,28 +1,40 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Prop } from '@typegoose/typegoose';
-import { Expose, Type } from 'class-transformer';
+import { ModelOptions, Prop, Ref } from '@typegoose/typegoose';
+import { Expose, Transform, Type } from 'class-transformer';
 import {
   IsDateString,
   IsEnum,
+  IsMongoId,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
 import { Model } from 'libraries/mongodb/modelOptions';
+import { Types } from 'mongoose';
+import { CategoryEntity } from 'src/admin/admin-category/entities/admin-category.entity';
 import { DocumentWithTimeStamps } from 'src/common/classes/documentWithTimeStamps';
 
+@ModelOptions({
+  schemaOptions: {
+    _id: false,
+    id: false,
+  },
+})
 export class GPSLocation {
   @Expose()
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   @ApiProperty({ required: true })
-  latitude: string;
+  @Prop({ required: true })
+  latitude: number;
 
   @Expose()
   @IsString()
-  @IsNotEmpty()
+  @IsNumber()
   @ApiProperty({ required: true })
-  longitude: string;
+  @Prop({ required: true })
+  longitude: number;
 }
 
 export enum LostItemStatusEnum {
@@ -64,6 +76,14 @@ export class LostItemEntity extends DocumentWithTimeStamps {
   gpsLocation: GPSLocation;
 
   @Expose()
+  @IsMongoId()
+  @IsNotEmpty()
+  @ApiProperty({ required: true })
+  @Transform(({ value }) => value?.toString())
+  @Prop({ required: true, ref: () => CategoryEntity })
+  category: Ref<CategoryEntity>;
+
+  @Expose()
   @IsString()
   @IsOptional()
   @ApiProperty({ required: false })
@@ -101,6 +121,13 @@ export class LostItemEntity extends DocumentWithTimeStamps {
   @ApiProperty({ required: false })
   @Prop({ required: false, trim: true })
   imageURL?: string;
+
+  @Expose()
+  @IsMongoId()
+  @Type(() => String)
+  @Prop({ required: true, ref: 'users' })
+  @ApiProperty({ required: true, type: String })
+  createdBy: Types.ObjectId;
 
   @Expose()
   @Prop({ required: false, type: Boolean, default: true })
