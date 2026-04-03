@@ -35,5 +35,6 @@ export const Routes = {
   },
   [ControllersEnum.Category]: {
     findAll: '',
+    findOne: ':id',
   },
 } as const;
