@@ -25,4 +25,7 @@ export const Routes = {
   [ControllersEnum.Profile]: {
     me: 'me',
   },
+  [ControllersEnum.Category]: {
+    findAll: '',
+  },
 } as const;

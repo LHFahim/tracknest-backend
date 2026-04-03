@@ -4,4 +4,6 @@ export enum ControllersEnum {
   Auth = 'auth',
   Users = 'users',
   Profile = 'profile',
+  Category = 'categories',
+  LostItem = 'lost-items',
 }

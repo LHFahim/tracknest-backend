@@ -8,6 +8,7 @@ import { ConfigService } from './config/config.service';
 import { ProfileModule } from './profile/profile.module';
 import { UserModule } from './user/user.module';
 import { LostItemModule } from './lost-item/lost-item.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -28,6 +29,8 @@ import { LostItemModule } from './lost-item/lost-item.module';
     ProfileModule,
 
     LostItemModule,
+
+    CategoryModule,
   ],
   controllers: [],
   providers: [AppService],
