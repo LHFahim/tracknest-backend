@@ -35,16 +35,11 @@ export class AdminJwtAuthGuard implements CanActivate {
       throw new BadRequestException('Authorization Token is Required');
 
     const accessTokenData = await this.jwtService.verifyAsync(tokenSplit);
-    console.log(
-      '🚀 ~ AdminJwtAuthGuard ~ canActivate ~ accessTokenData:',
-      accessTokenData,
-    );
 
     if (accessTokenData.type !== 'access_token')
       throw new BadRequestException('Invalid access token');
 
     const user = await this.authService.getAuthUser(accessTokenData.id);
-    console.log('🚀 ~ AdminJwtAuthGuard ~ canActivate ~ user:', user);
     if (!user) throw new UnauthorizedException('Unauthorized');
 
     if (user.panelType !== PanelType.ADMIN)

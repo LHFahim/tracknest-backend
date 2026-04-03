@@ -20,7 +20,7 @@ import {
 export class AdminCategoryController {
   constructor(private readonly categoryService: AdminCategoryService) {}
 
-  @Get(Routes[ControllersEnum.Category].findAll)
+  @Get(Routes[ControllersEnum.AdminCategory].findAll)
   findAll(@UserId() userId: string, @Query() query: AdminCategoryQueryDto) {
     return this.categoryService.findAll(userId, query);
   }
@@ -31,5 +31,10 @@ export class AdminCategoryController {
     @Body() createCategoryDto: CreateCategoryDto,
   ) {
     return this.categoryService.createOne(userId, createCategoryDto);
+  }
+
+  @Get(Routes[ControllersEnum.AdminCategory].findOne)
+  findOne(@UserId() userId: string, @Query() query: AdminCategoryQueryDto) {
+    return this.categoryService.findAll(userId, query);
   }
 }
