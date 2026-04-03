@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypegooseModule } from 'nestjs-typegoose';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthModule } from 'src/auth/auth.module';
 import { ConfigService } from 'src/config/config.service';
 import { UserModule } from 'src/user/user.module';
 import { AdminAuthController } from './admin-auth.controller';
@@ -10,7 +10,7 @@ import { AdminAuthService } from './admin-auth.service';
 @Global()
 @Module({
   controllers: [AdminAuthController],
-  providers: [AdminAuthService, AuthService],
+  providers: [AdminAuthService],
   imports: [
     TypegooseModule.forFeature([]),
     JwtModule.registerAsync({
@@ -21,8 +21,9 @@ import { AdminAuthService } from './admin-auth.service';
       }),
       inject: [ConfigService],
     }),
+    AuthModule,
     UserModule,
   ],
-  exports: [AdminAuthService],
+  exports: [AdminAuthService, JwtModule, AuthModule],
 })
 export class AdminAuthModule {}

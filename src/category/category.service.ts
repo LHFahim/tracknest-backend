@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { SerializeService } from 'libraries/serializer/serialize';
 import { InjectModel } from 'nestjs-typegoose';
-import { CategoryEntity } from './entities/category.entity';
+import { CategoryEntity } from 'src/admin/admin-category/entities/admin-category.entity';
 
 @Injectable()
 export class CategoryService extends SerializeService<CategoryEntity> {

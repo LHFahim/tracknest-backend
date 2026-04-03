@@ -11,6 +11,14 @@ export const Routes = {
     verifyEmailPublic: 'verify-email/public',
   },
 
+  [ControllersEnum.AdminCategory]: {
+    findAll: '',
+    findOne: ':id',
+    createOne: '',
+    updateOne: ':id',
+    deleteOne: ':id',
+  },
+
   [ControllersEnum.Auth]: {
     login: 'login/email',
     registerByEmail: 'register/email',

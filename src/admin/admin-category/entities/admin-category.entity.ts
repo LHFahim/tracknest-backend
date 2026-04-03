@@ -1,8 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Prop } from '@typegoose/typegoose';
-import { Expose } from 'class-transformer';
-import { IsHexColor, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Expose, Type } from 'class-transformer';
+import {
+  IsHexColor,
+  IsMongoId,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { Model } from 'libraries/mongodb/modelOptions';
+import { Types } from 'mongoose';
 import { DocumentWithTimeStamps } from 'src/common/classes/documentWithTimeStamps';
 
 @Model('categories', true)
@@ -16,6 +23,13 @@ export class CategoryEntity extends DocumentWithTimeStamps {
 
   @Expose()
   @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ required: false })
+  @Prop({ required: false, trim: true, unique: true })
+  slug: string;
+
+  @Expose()
+  @IsString()
   @IsOptional()
   @ApiProperty({ required: false })
   @Prop({ required: false, trim: true })
@@ -24,7 +38,7 @@ export class CategoryEntity extends DocumentWithTimeStamps {
   @Expose()
   @IsString()
   @IsOptional()
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, default: 'electronics' })
   @Prop({ required: false, trim: true })
   icon?: string;
 
@@ -32,7 +46,7 @@ export class CategoryEntity extends DocumentWithTimeStamps {
   @IsString()
   @IsHexColor()
   @IsOptional()
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, default: '#2563EB' })
   @Prop({ required: false, trim: true })
   color?: string;
 
@@ -42,6 +56,13 @@ export class CategoryEntity extends DocumentWithTimeStamps {
   @ApiProperty({ required: false })
   @Prop({ required: false, trim: true })
   parentCategory?: string;
+
+  @Expose()
+  @IsMongoId()
+  @Type(() => String)
+  @Prop({ required: true, ref: 'users' })
+  @ApiProperty({ required: true, type: String })
+  createdBy: Types.ObjectId;
 
   @Expose()
   @Prop({ required: false, type: Boolean, default: true })
