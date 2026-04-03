@@ -23,7 +23,7 @@ import {
   UpdateCategoryDto,
 } from './dto/admin-category.dto';
 
-@ApiTags('Admin -> category')
+@ApiTags('Admin -> Category')
 @Serialize()
 @ApiBearerAuth()
 @UseGuards(AdminJwtAuthGuard)

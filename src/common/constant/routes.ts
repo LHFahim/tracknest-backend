@@ -19,6 +19,13 @@ export const Routes = {
     deleteOne: ':id',
   },
 
+  [ControllersEnum.AdminLostItem]: {
+    findAll: '',
+    findOne: ':id',
+    updateOne: ':id',
+    deleteOne: ':id',
+  },
+
   [ControllersEnum.Auth]: {
     login: 'login/email',
     registerByEmail: 'register/email',

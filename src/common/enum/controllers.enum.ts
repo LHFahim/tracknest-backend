@@ -1,6 +1,7 @@
 export enum ControllersEnum {
   AdminAuth = 'admin/auth',
   AdminCategory = 'admin/categories',
+  AdminLostItem = 'admin/lost-items',
 
   Auth = 'auth',
   Users = 'users',
