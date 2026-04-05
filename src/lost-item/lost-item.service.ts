@@ -8,6 +8,7 @@ import {
   LostItemPaginatedDto,
   LostItemQueryDto,
   UpdateLostItemDto,
+  UpdateLostItemStatusDto,
 } from './dto/lost-item.dto';
 import {
   LostItemEntity,
@@ -108,6 +109,30 @@ export class LostItemService extends SerializeService<LostItemEntity> {
     const updatedLostItem = await this.lostItemModel.findByIdAndUpdate(
       id,
       { $set: updateLostItemDto },
+      { new: true },
+    );
+
+    return this.toJSON(updatedLostItem, LostItemDto);
+  }
+
+  async updateStatus(
+    userId: string,
+    id: string,
+    body: UpdateLostItemStatusDto,
+  ) {
+    const lostItem = await this.lostItemModel.findOne({
+      _id: id,
+      createdBy: userId,
+      isDeleted: false,
+    });
+
+    if (!lostItem) {
+      throw new NotFoundException('Lost item not found');
+    }
+
+    const updatedLostItem = await this.lostItemModel.findByIdAndUpdate(
+      id,
+      { status: body.status },
       { new: true },
     );
 

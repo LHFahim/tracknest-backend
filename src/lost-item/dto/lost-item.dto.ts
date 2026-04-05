@@ -24,6 +24,10 @@ export class CreateLostItemDto extends PickType(LostItemEntity, [
 
 export class UpdateLostItemDto extends PartialType(CreateLostItemDto) {}
 
+export class UpdateLostItemStatusDto extends PickType(LostItemEntity, [
+  'status',
+]) {}
+
 export class LostItemDto extends LostItemEntity {}
 
 export class LostItemQueryDto extends PaginationQueryDto {}

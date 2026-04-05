@@ -20,6 +20,7 @@ import {
   CreateLostItemDto,
   LostItemQueryDto,
   UpdateLostItemDto,
+  UpdateLostItemStatusDto,
 } from './dto/lost-item.dto';
 import { LostItemService } from './lost-item.service';
 
@@ -56,6 +57,15 @@ export class LostItemController {
     @Body() updateLostItemDto: UpdateLostItemDto,
   ) {
     return this.lostItemService.updateOne(userId, id, updateLostItemDto);
+  }
+
+  @Patch(Routes[ControllersEnum.LostItem].updateStatus)
+  updateStatus(
+    @UserId() userId: string,
+    @ResourceId() id: string,
+    @Body() updateLostItemDto: UpdateLostItemStatusDto,
+  ) {
+    return this.lostItemService.updateStatus(userId, id, updateLostItemDto);
   }
 
   @Delete(Routes[ControllersEnum.LostItem].deleteOne)

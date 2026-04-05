@@ -50,6 +50,7 @@ export const Routes = {
     findOne: ':id',
     create: '',
     updateOne: ':id',
+    updateStatus: ':id/status',
     deleteOne: ':id',
   },
 } as const;
