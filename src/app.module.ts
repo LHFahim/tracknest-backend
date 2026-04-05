@@ -9,6 +9,7 @@ import { ProfileModule } from './profile/profile.module';
 import { UserModule } from './user/user.module';
 import { LostItemModule } from './lost-item/lost-item.module';
 import { CategoryModule } from './category/category.module';
+import { FoundItemModule } from './found-item/found-item.module';
 
 @Module({
   imports: [
@@ -31,6 +32,8 @@ import { CategoryModule } from './category/category.module';
     LostItemModule,
 
     CategoryModule,
+
+    FoundItemModule,
   ],
   controllers: [],
   providers: [AppService],
