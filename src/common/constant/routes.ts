@@ -53,4 +53,13 @@ export const Routes = {
     updateStatus: ':id/status',
     deleteOne: ':id',
   },
+
+  [ControllersEnum.FoundItem]: {
+    findAll: '',
+    findOne: ':id',
+    create: '',
+    updateOne: ':id',
+    updateStatus: ':id/status',
+    deleteOne: ':id',
+  },
 } as const;

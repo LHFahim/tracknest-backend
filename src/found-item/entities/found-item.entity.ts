@@ -12,6 +12,7 @@ import {
 import { Model } from 'libraries/mongodb/modelOptions';
 import { Types } from 'mongoose';
 import { CategoryEntity } from 'src/admin/admin-category/entities/admin-category.entity';
+import { DocumentWithTimeStamps } from 'src/common/classes/documentWithTimeStamps';
 import { GPSLocation } from 'src/lost-item/entities/lost-item.entity';
 
 export enum FoundItemCustodyTypeEnum {
@@ -28,7 +29,7 @@ export enum FoundItemStatusEnum {
 }
 
 @Model('found-items', true)
-export class FoundItemEntity {
+export class FoundItemEntity extends DocumentWithTimeStamps {
   @Expose()
   @IsString()
   @IsNotEmpty()

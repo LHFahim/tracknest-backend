@@ -8,4 +8,5 @@ export enum ControllersEnum {
   Profile = 'profile',
   Category = 'categories',
   LostItem = 'lost-items',
+  FoundItem = 'found-items',
 }
