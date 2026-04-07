@@ -1,4 +1,4 @@
-# Test Cases – Smart Lost & Found System
+# Test Cases – Lost & Found System
 
 ## Test Case 1: User Login (Valid)
 
