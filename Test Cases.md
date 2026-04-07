@@ -28,5 +28,20 @@ Expected Result | Error message displayed
 Actual Result | (To be filled)
 Status | Pass / Fail
 
+---
 
+## Test Case 3: Report Lost Item
+
+| Field | Details |
+|------|--------|
+Test Case ID | TC003
+Feature | Report Lost Item
+Description | Verify user can submit lost item form
+Precondition | User logged in
+Test Steps | 1. Fill item details<br>2. Submit form
+Expected Result | Item is saved successfully
+Actual Result | (To be filled)
+Status | Pass / Fail
+
+---
 
