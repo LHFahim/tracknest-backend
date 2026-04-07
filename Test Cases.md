@@ -15,7 +15,18 @@ Status | Pass / Fail
 
 ---
 
+## Test Case 2: User Login (Invalid)
 
+| Field | Details |
+|------|--------|
+Test Case ID | TC002
+Feature | User Login
+Description | Verify login with invalid credentials
+Precondition | User account exists
+Test Steps | 1. Enter wrong password<br>2. Click login
+Expected Result | Error message displayed
+Actual Result | (To be filled)
+Status | Pass / Fail
 
 
 
