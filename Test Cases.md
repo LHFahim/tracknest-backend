@@ -45,3 +45,16 @@ Status | Pass / Fail
 
 ---
 
+
+## Test Case 4: View Matching Results
+
+| Field | Details |
+|------|--------|
+Test Case ID | TC004
+Feature | AI Matching
+Description | Verify matching results are displayed
+Precondition | Lost & found items exist
+Test Steps | 1. Submit item<br>2. View matches
+Expected Result | Matching items are shown
+Actual Result | (To be filled)
+Status | Pass / Fail
