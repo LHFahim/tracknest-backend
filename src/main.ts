@@ -8,6 +8,13 @@ async function bootstrap() {
   const logger = new Logger('Server is starting up!');
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
   const configService: ConfigService = app.get(ConfigService);
   const PORT = configService.PORT;
 
