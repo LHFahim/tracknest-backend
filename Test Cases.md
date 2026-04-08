@@ -58,3 +58,14 @@ Test Steps | 1. Submit item<br>2. View matches
 Expected Result | Matching items are shown
 Actual Result | (To be filled)
 Status | Pass / Fail
+
+
+## Test Case 5: Database Validation (MongoDB)
+
+| Field | Details |
+|------|--------|
+Test Case ID | TC004
+Feature | Data Storage
+Description | Verify data stored correctly
+Steps| 1.Submit item<br>2.Check database
+Expected Result| Data stored correctly
