@@ -7,6 +7,7 @@ import {
   FoundItemPaginatedDto,
   FoundItemQueryDto,
   UpdateFoundItemDto,
+  UpdateFoundItemStatusDto,
 } from 'src/found-item/dto/found-item.dto';
 import { FoundItemEntity } from 'src/found-item/entities/found-item.entity';
 
@@ -77,6 +78,27 @@ export class AdminFoundItemService extends SerializeService<FoundItemEntity> {
     const updatedFoundItem = await this.foundItemModel.findByIdAndUpdate(
       id,
       { ...body },
+      { new: true },
+    );
+
+    return this.toJSON(updatedFoundItem, FoundItemDto);
+  }
+
+  async updateStatus(
+    userId: string,
+    id: string,
+    body: UpdateFoundItemStatusDto,
+  ) {
+    const foundItem = await this.foundItemModel.findOne({
+      _id: id,
+      isDeleted: false,
+    });
+
+    if (!foundItem) throw new NotFoundException('Found item not found');
+
+    const updatedFoundItem = await this.foundItemModel.findByIdAndUpdate(
+      id,
+      { status: body.status },
       { new: true },
     );
 

@@ -30,6 +30,7 @@ export const Routes = {
     findAll: '',
     findOne: ':id',
     updateOne: ':id',
+    updateStatus: ':id/status',
     deleteOne: ':id',
   },
 

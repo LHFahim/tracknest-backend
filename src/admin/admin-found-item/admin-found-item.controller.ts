@@ -17,6 +17,7 @@ import { ControllersEnum } from 'src/common/enum/controllers.enum';
 import {
   FoundItemQueryDto,
   UpdateFoundItemDto,
+  UpdateFoundItemStatusDto,
 } from 'src/found-item/dto/found-item.dto';
 import { AdminJwtAuthGuard } from '../admin-auth/admin-guards/admin-jwt-auth.guard';
 import { AdminFoundItemService } from './admin-found-item.service';
@@ -46,6 +47,15 @@ export class AdminFoundItemController {
     @Body() body: UpdateFoundItemDto,
   ) {
     return this.foundItemService.updateOne(userId, id, body);
+  }
+
+  @Patch(Routes[ControllersEnum.AdminFoundItem].updateStatus)
+  updateStatus(
+    @UserId() userId: string,
+    @ResourceId() id: string,
+    @Body() body: UpdateFoundItemStatusDto,
+  ) {
+    return this.foundItemService.updateStatus(userId, id, body);
   }
 
   @Delete(Routes[ControllersEnum.AdminFoundItem].deleteOne)
