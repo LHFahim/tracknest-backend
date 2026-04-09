@@ -139,19 +139,19 @@ export class LostItemService extends SerializeService<LostItemEntity> {
     return this.toJSON(updatedLostItem, LostItemDto);
   }
 
-  async deleteOne(userId: string, id: string) {
+  async deleteOne(userId: string, id: string): Promise<boolean> {
     const lostItem = await this.lostItemModel.findOne({
       _id: id,
       createdBy: userId,
       isDeleted: false,
     });
 
-    if (!lostItem) throw new NotFoundException('Lost item not found');
+    if (!lostItem) return false;
 
     lostItem.isDeleted = true;
     lostItem.isActive = false;
     await lostItem.save();
 
-    return this.toJSON(lostItem, LostItemDto);
+    return true;
   }
 }

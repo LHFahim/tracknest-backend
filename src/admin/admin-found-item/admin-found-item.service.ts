@@ -105,18 +105,18 @@ export class AdminFoundItemService extends SerializeService<FoundItemEntity> {
     return this.toJSON(updatedFoundItem, FoundItemDto);
   }
 
-  async deleteOne(userId: string, id: string) {
+  async deleteOne(userId: string, id: string): Promise<boolean> {
     const foundItem = await this.foundItemModel.findOne({
       _id: id,
       isDeleted: false,
     });
 
-    if (!foundItem) throw new NotFoundException('Found item not found');
+    if (!foundItem) return false;
 
     foundItem.isDeleted = true;
     foundItem.isActive = false;
     await foundItem.save();
 
-    return this.toJSON(foundItem, FoundItemDto);
+    return true;
   }
 }
