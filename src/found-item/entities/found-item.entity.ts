@@ -45,7 +45,6 @@ export class FoundItemEntity extends DocumentWithTimeStamps {
   @Prop({ required: true, trim: true })
   description: string;
 
-  @Expose()
   @IsString()
   @IsOptional()
   @ApiProperty({ required: false })

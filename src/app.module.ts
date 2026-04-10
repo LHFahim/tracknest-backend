@@ -11,6 +11,7 @@ import { LostItemModule } from './lost-item/lost-item.module';
 import { CategoryModule } from './category/category.module';
 import { FoundItemModule } from './found-item/found-item.module';
 import { ClaimModule } from './claim/claim.module';
+import { HandoverModule } from './handover/handover.module';
 
 @Module({
   imports: [
@@ -37,6 +38,8 @@ import { ClaimModule } from './claim/claim.module';
     FoundItemModule,
 
     ClaimModule,
+
+    HandoverModule,
   ],
   controllers: [],
   providers: [AppService],
