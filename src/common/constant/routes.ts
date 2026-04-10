@@ -70,4 +70,10 @@ export const Routes = {
     updateStatus: ':id/status',
     deleteOne: ':id',
   },
+
+  [ControllersEnum.Handover]: {
+    findAll: '',
+    findOne: ':id',
+    create: '',
+  },
 } as const;

@@ -10,4 +10,5 @@ export enum ControllersEnum {
   Category = 'categories',
   LostItem = 'lost-items',
   FoundItem = 'found-items',
+  Handover = 'handovers',
 }

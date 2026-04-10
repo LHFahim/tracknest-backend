@@ -1,26 +1,72 @@
-import { Injectable } from '@nestjs/common';
-import { CreateHandoverDto } from './dto/create-handover.dto';
-import { UpdateHandoverDto } from './dto/update-handover.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ReturnModelType } from '@typegoose/typegoose';
+import { SerializeService } from 'libraries/serializer/serialize';
+import { InjectModel } from 'nestjs-typegoose';
+import {
+  CreateHandoverDto,
+  HandoverDto,
+  HandoverPaginatedDto,
+  HandoverQueryDto,
+} from './dto/handover.dto';
+import { HandoverEntity } from './entities/handover.entity';
 
 @Injectable()
-export class HandoverService {
-  create(createHandoverDto: CreateHandoverDto) {
-    return 'This action adds a new handover';
+export class HandoverService extends SerializeService<HandoverEntity> {
+  constructor(
+    @InjectModel(HandoverEntity)
+    private readonly handoverModel: ReturnModelType<typeof HandoverEntity>,
+  ) {
+    super(HandoverEntity);
   }
 
-  findAll() {
-    return `This action returns all handover`;
+  async create(userId: string, body: CreateHandoverDto) {
+    const handover = await this.handoverModel.create({
+      ...body,
+      handedOverBy: userId,
+    });
+
+    return this.toJSON(handover, HandoverDto);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} handover`;
+  async findAll(
+    userId: string,
+    query: HandoverQueryDto,
+  ): Promise<HandoverPaginatedDto> {
+    const filters = {
+      ...(query.search && {
+        $or: [
+          { note: new RegExp(`.*${query.search}.*`, 'i') },
+          { verificationMethod: new RegExp(`.*${query.search}.*`, 'i') },
+        ],
+      }),
+    };
+
+    const items = await this.handoverModel
+      .find(filters)
+      .sort({ [query.sortBy]: query.sort })
+      .limit(query.pageSize)
+      .skip((query.page - 1) * query.pageSize);
+
+    const total = await this.handoverModel.countDocuments(filters);
+
+    return {
+      items: this.toJSONs(items, HandoverDto),
+      pagination: {
+        total,
+        current: query.page,
+        previous: query.page === 1 ? 1 : query.page - 1,
+        next: total > query.page * query.pageSize ? query.page + 1 : query.page,
+      },
+    };
   }
 
-  update(id: number, updateHandoverDto: UpdateHandoverDto) {
-    return `This action updates a #${id} handover`;
-  }
+  async findOne(userId: string, id: string) {
+    const handover = await this.handoverModel.findById(id);
 
-  remove(id: number) {
-    return `This action removes a #${id} handover`;
+    if (!handover) {
+      throw new NotFoundException('Handover not found');
+    }
+
+    return this.toJSON(handover, HandoverDto);
   }
 }

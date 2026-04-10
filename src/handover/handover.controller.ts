@@ -1,34 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Serialize } from 'libraries/serializer/serializer.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Routes } from 'src/common/constant/routes';
+import { ResourceId } from 'src/common/decorator/params.decorator';
+import { UserId } from 'src/common/decorator/user.decorator';
+import { APIVersions } from 'src/common/enum/api-versions.enum';
+import { ControllersEnum } from 'src/common/enum/controllers.enum';
 import { HandoverService } from './handover.service';
-import { CreateHandoverDto } from './dto/create-handover.dto';
-import { UpdateHandoverDto } from './dto/update-handover.dto';
+import { CreateHandoverDto, HandoverQueryDto } from './dto/handover.dto';
 
-@Controller('handover')
+@ApiTags('Handover')
+@Serialize()
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
+@Controller({ path: ControllersEnum.Handover, version: APIVersions.V1 })
 export class HandoverController {
   constructor(private readonly handoverService: HandoverService) {}
 
-  @Post()
-  create(@Body() createHandoverDto: CreateHandoverDto) {
-    return this.handoverService.create(createHandoverDto);
+  @Post(Routes[ControllersEnum.Handover].create)
+  create(@UserId() userId: string, @Body() body: CreateHandoverDto) {
+    return this.handoverService.create(userId, body);
   }
 
-  @Get()
-  findAll() {
-    return this.handoverService.findAll();
+  @Get(Routes[ControllersEnum.Handover].findAll)
+  findAll(@UserId() userId: string, @Query() query: HandoverQueryDto) {
+    return this.handoverService.findAll(userId, query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.handoverService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHandoverDto: UpdateHandoverDto) {
-    return this.handoverService.update(+id, updateHandoverDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.handoverService.remove(+id);
+  @Get(Routes[ControllersEnum.Handover].findOne)
+  findOne(@UserId() userId: string, @ResourceId() id: string) {
+    return this.handoverService.findOne(userId, id);
   }
 }
