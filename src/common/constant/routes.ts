@@ -35,6 +35,8 @@ export const Routes = {
   },
 
   [ControllersEnum.AdminHandover]: {
+    findAll: '',
+    findOne: ':id',
     createOne: '',
   },
 
