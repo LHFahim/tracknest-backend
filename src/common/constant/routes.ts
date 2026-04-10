@@ -34,6 +34,10 @@ export const Routes = {
     deleteOne: ':id',
   },
 
+  [ControllersEnum.AdminHandover]: {
+    createOne: '',
+  },
+
   [ControllersEnum.Auth]: {
     login: 'login/email',
     registerByEmail: 'register/email',
@@ -72,8 +76,7 @@ export const Routes = {
   },
 
   [ControllersEnum.Handover]: {
-    findAll: '',
+    findAll: 'my-handover',
     findOne: ':id',
-    create: '',
   },
 } as const;

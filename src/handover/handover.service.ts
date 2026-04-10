@@ -3,7 +3,6 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { SerializeService } from 'libraries/serializer/serialize';
 import { InjectModel } from 'nestjs-typegoose';
 import {
-  CreateHandoverDto,
   HandoverDto,
   HandoverPaginatedDto,
   HandoverQueryDto,
@@ -19,20 +18,12 @@ export class HandoverService extends SerializeService<HandoverEntity> {
     super(HandoverEntity);
   }
 
-  async create(userId: string, body: CreateHandoverDto) {
-    const handover = await this.handoverModel.create({
-      ...body,
-      handedOverBy: userId,
-    });
-
-    return this.toJSON(handover, HandoverDto);
-  }
-
   async findAll(
     userId: string,
     query: HandoverQueryDto,
   ): Promise<HandoverPaginatedDto> {
     const filters = {
+      receivedByUser: userId,
       ...(query.search && {
         $or: [
           { note: new RegExp(`.*${query.search}.*`, 'i') },
@@ -61,7 +52,10 @@ export class HandoverService extends SerializeService<HandoverEntity> {
   }
 
   async findOne(userId: string, id: string) {
-    const handover = await this.handoverModel.findById(id);
+    const handover = await this.handoverModel.findOne({
+      _id: id,
+      receivedByUser: userId,
+    });
 
     if (!handover) {
       throw new NotFoundException('Handover not found');
