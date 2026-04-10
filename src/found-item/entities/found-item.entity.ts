@@ -23,6 +23,7 @@ export enum FoundItemCustodyTypeEnum {
 export enum FoundItemStatusEnum {
   REPORTED = 'REPORTED',
   IN_CUSTODY = 'IN_CUSTODY',
+  READY_FOR_HANDOVER = 'READY_FOR_HANDOVER',
   RETURNED = 'RETURNED',
   UNCLAIMED = 'UNCLAIMED',
   DISPOSED = 'DISPOSED',
@@ -43,6 +44,13 @@ export class FoundItemEntity extends DocumentWithTimeStamps {
   @ApiProperty({ required: true })
   @Prop({ required: true, trim: true })
   description: string;
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  @Prop({ required: false, trim: true })
+  serialNumber?: string;
 
   @Expose()
   @IsMongoId()
@@ -123,12 +131,17 @@ export class FoundItemEntity extends DocumentWithTimeStamps {
   @Prop({ required: false, type: [String], default: [] })
   images: string[];
 
-  @Expose()
   @IsString()
   @IsOptional()
   @ApiProperty({ required: false })
   @Prop({ required: false, trim: true })
   identifyingDetails?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  @Prop({ required: false, trim: true })
+  storageLocation?: string;
 
   @Expose()
   @IsMongoId()
