@@ -7,7 +7,7 @@ import {
   ClaimPaginatedDto,
   ClaimQueryDto,
 } from 'src/claim/dto/claim.dto';
-import { ClaimEntity } from 'src/claim/entities/claim.entity';
+import { ClaimEntity, ClaimStatusEnum } from 'src/claim/entities/claim.entity';
 import {
   FoundItemEntity,
   FoundItemStatusEnum,
@@ -90,6 +90,15 @@ export class AdminClaimService extends SerializeService<ClaimEntity> {
     await this.foundItemModel.findByIdAndUpdate(claim.foundItemId, {
       status: FoundItemStatusEnum.READY_FOR_HANDOVER,
     });
+
+    // close other claim reports of the same item
+    await this.claimModel.updateMany(
+      {
+        _id: { $ne: id },
+        foundItemId: claim.foundItemId,
+      },
+      { isClosed: ClaimStatusEnum.REJECTED },
+    );
 
     return this.toJSON(updatedClaim, ClaimDto);
   }
