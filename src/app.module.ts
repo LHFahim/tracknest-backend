@@ -12,6 +12,7 @@ import { CategoryModule } from './category/category.module';
 import { FoundItemModule } from './found-item/found-item.module';
 import { ClaimModule } from './claim/claim.module';
 import { HandoverModule } from './handover/handover.module';
+import { ThreadModule } from './thread/thread.module';
 
 @Module({
   imports: [
@@ -40,6 +41,8 @@ import { HandoverModule } from './handover/handover.module';
     ClaimModule,
 
     HandoverModule,
+
+    ThreadModule,
   ],
   controllers: [],
   providers: [AppService],
