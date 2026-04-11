@@ -37,7 +37,7 @@ export const Routes = {
   [ControllersEnum.AdminClaim]: {
     findAll: '',
     findOne: ':id',
-    updateOne: ':id',
+    updateStatus: ':id/status',
   },
 
   [ControllersEnum.AdminHandover]: {

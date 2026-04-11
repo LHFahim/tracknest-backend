@@ -29,12 +29,12 @@ export class AdminClaimController {
     return this.adminClaimService.findOne(userId, id);
   }
 
-  @Patch(Routes[ControllersEnum.AdminClaim].updateOne)
-  updateOne(
+  @Patch(Routes[ControllersEnum.AdminClaim].updateStatus)
+  updateStatus(
     @UserId() userId: string,
     @ResourceId() id: string,
     @Body() body: UpdateClaimDto,
   ) {
-    return this.adminClaimService.updateOne(userId, id, body);
+    return this.adminClaimService.updateStatus(userId, id, body);
   }
 }

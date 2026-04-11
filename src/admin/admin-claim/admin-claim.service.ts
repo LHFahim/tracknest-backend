@@ -8,6 +8,10 @@ import {
   ClaimQueryDto,
 } from 'src/claim/dto/claim.dto';
 import { ClaimEntity } from 'src/claim/entities/claim.entity';
+import {
+  FoundItemEntity,
+  FoundItemStatusEnum,
+} from 'src/found-item/entities/found-item.entity';
 import { UpdateClaimDto } from './dto/admin-claim.dto';
 
 @Injectable()
@@ -15,6 +19,8 @@ export class AdminClaimService extends SerializeService<ClaimEntity> {
   constructor(
     @InjectModel(ClaimEntity)
     private readonly claimModel: ReturnModelType<typeof ClaimEntity>,
+    @InjectModel(FoundItemEntity)
+    private readonly foundItemModel: ReturnModelType<typeof FoundItemEntity>,
   ) {
     super(ClaimEntity);
   }
@@ -63,7 +69,7 @@ export class AdminClaimService extends SerializeService<ClaimEntity> {
     return this.toJSON(claim, ClaimDto);
   }
 
-  async updateOne(userId: string, id: string, body: UpdateClaimDto) {
+  async updateStatus(userId: string, id: string, body: UpdateClaimDto) {
     const claim = await this.claimModel.findOne({
       _id: id,
       isDeleted: false,
@@ -80,6 +86,10 @@ export class AdminClaimService extends SerializeService<ClaimEntity> {
       },
       { new: true },
     );
+
+    await this.foundItemModel.findByIdAndUpdate(claim.foundItemId, {
+      status: FoundItemStatusEnum.READY_FOR_HANDOVER,
+    });
 
     return this.toJSON(updatedClaim, ClaimDto);
   }
