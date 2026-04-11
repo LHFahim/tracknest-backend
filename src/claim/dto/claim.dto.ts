@@ -1,4 +1,4 @@
-import { ApiProperty, PickType } from '@nestjs/swagger';
+import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsMongoId, IsNotEmpty } from 'class-validator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';

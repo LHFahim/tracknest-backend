@@ -34,6 +34,12 @@ export const Routes = {
     deleteOne: ':id',
   },
 
+  [ControllersEnum.AdminClaim]: {
+    findAll: '',
+    findOne: ':id',
+    updateOne: ':id',
+  },
+
   [ControllersEnum.AdminHandover]: {
     findAll: '',
     findOne: ':id',
