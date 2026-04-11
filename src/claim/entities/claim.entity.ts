@@ -46,7 +46,7 @@ export class ClaimEntity extends DocumentWithTimeStamps {
   @IsOptional()
   @ApiProperty({ required: false })
   @Transform(({ value }) => value?.toString())
-  @Prop({ required: false, ref: () => LostItemEntity })
+  @Prop({ required: false, ref: () => LostItemEntity, default: undefined })
   lostItemId?: Ref<LostItemEntity>;
 
   @Expose()

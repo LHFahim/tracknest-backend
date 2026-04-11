@@ -77,6 +77,13 @@ export const Routes = {
     deleteOne: ':id',
   },
 
+  [ControllersEnum.Claim]: {
+    create: '',
+    findAll: 'my',
+    findOne: 'my/:id',
+    withdraw: 'my/:id/withdraw',
+  },
+
   [ControllersEnum.Handover]: {
     findAll: 'my-handover',
     findOne: ':id',
