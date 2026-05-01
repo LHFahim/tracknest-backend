@@ -32,7 +32,7 @@ export class UserService extends SerializeService<UserEntity> {
       avatarURL: '',
       authProvider: AuthProvider.EMAIL,
 
-      panelType: PanelType.ADMIN,
+      panelType: body.panelType || PanelType.NORMAL_USER,
 
       lastLogin: null,
 
