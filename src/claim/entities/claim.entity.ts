@@ -82,8 +82,8 @@ export class ClaimEntity extends DocumentWithTimeStamps {
   @Expose()
   @IsOptional()
   @IsDateString()
-  @ApiProperty({ required: true })
-  @Prop({ required: true })
+  @ApiProperty({ required: false })
+  @Prop({ required: false })
   reviewDate?: Date;
 
   @Expose()
