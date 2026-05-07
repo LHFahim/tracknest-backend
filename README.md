@@ -30,11 +30,113 @@ The system will make it simple and helpful to keep track of things that have bee
 
 # API Endpoints
 
+| Method | Endpoint        | Description                       |
+| ------ | --------------- | --------------------------------- |
+| POST   | `/api/register` | Register a new user               |
+| POST   | `/api/login`    | User login authentication         |
+| GET    | `/api/profile`  | Retrieve user profile information |
+
+| Method | Endpoint            | Description                        |
+| ------ | ------------------- | ---------------------------------- |
+| POST   | `/api/report-lost`  | Submit a lost item report          |
+| POST   | `/api/report-found` | Submit a found item report         |
+| GET    | `/api/items`        | Retrieve all reported items        |
+| GET    | `/api/matches`      | Retrieve AI-based matching results |
+| DELETE | `/api/items/:id`    | Delete an item record              |
+
+| Method | Endpoint       | Description                |
+| ------ | -------------- | -------------------------- |
+| GET    | `/api/health`  | Check backend API status   |
+| GET    | `/api/test-db` | Verify database connection |
+
+
 # Database
+
+The project uses MongoDB as the primary database system for storing and managing application data.
+
+## Database Features
+User account management <br>
+Lost item records <br>
+Found item records <br>
+Matching result storage <br>
+Authentication data handling <br>
+
+## Technologies Used
+MongoDB <br>
+Mongoose ODM <br>
+NestJS database integration <br>
+
+## Sample Collections
+users <br>
+lost_items <br>
+found_items <br>
+matches <br>
 
 # AI Component
 
+The system includes a basic AI-based matching component to improve the accuracy of identifying related lost and found items.<br>
+
+## AI Features
+Text similarity comparison<br>
+Keyword-based matching<br>
+Item description comparison<br>
+Intelligent matching suggestions<br>
+
+## AI Technologies Used
+Python<br>
+Text similarity algorithms<br>
+difflib library (or similar matching libraries)<br>
+
+
+## AI Workflow
+User submits lost or found item<br>
+System compares item descriptions<br>
+Similarity score is generated<br>
+Potential matches are displayed to the user<br>
+
 # Installation
+
+## Prerequisites
+
+Before running the project, ensure the following are installed:
+
+Node.js
+npm
+MongoDB
+Git
+
+## Clone Repository
+git clone https://github.com/your-repository/project-name.git
+Install Frontend Dependencies
+cd frontend
+npm install
+Install Backend Dependencies
+cd backend
+npm install
+
+##Configure Environment Variables
+
+Create a .env file and add:
+
+BACKEND_API=http://localhost:5000
+FRONTEND_API=http://localhost:3000
+API_URL=http://localhost:5000
+AUTH_URL=http://localhost:3000
+Run Frontend
+npm run dev
+
+## Frontend runs on:
+
+http://localhost:3000
+Run Backend
+npm run start
+
+## Backend runs on:
+
+http://localhost:5000
+Run MongoDB
+
+Ensure MongoDB service is running locally before starting the backend server.
 
 # Team Info
 
@@ -48,5 +150,5 @@ The system will make it simple and helpful to keep track of things that have bee
 04	|Gihani Shanika De Silva Balage Don |	12267157
 
 
-# How to Run Full System 
+
 
