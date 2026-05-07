@@ -42,10 +42,10 @@ The system will make it simple and helpful to keep track of things that have bee
 
 | No | Student Name | Student ID|
 |------|--------|------------|
-01	Lutful Hassan Fahim	12268790
-02	Md Raqibur Rahman Roni	12279329
-03	Aman Sharma	12299445
-04	Gihani Shanika De Silva Balage Don	12267157
+01	|Lutful Hassan Fahim|	12268790|
+02  |Md Raqibur Rahman Roni	|12279329
+03	|Aman Sharma |	12299445
+04	|Gihani Shanika De Silva Balage Don |	12267157
 
 
 # How to Run Full System 
