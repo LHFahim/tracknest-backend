@@ -114,7 +114,7 @@ Install Backend Dependencies
 cd backend
 npm install
 
-##Configure Environment Variables
+## Configure Environment Variables
 
 Create a .env file and add:
 
