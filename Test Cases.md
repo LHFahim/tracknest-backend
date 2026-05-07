@@ -69,3 +69,25 @@ Feature | Data Storage
 Description | Verify data stored correctly
 Steps| 1.Submit item<br>2.Check database
 Expected Result| Data stored correctly
+
+## Test Case 6: Backedn API Test Cases
+
+| **Test Case ID** | **Feature**  | **Endpoint**           | **Scenario Type** | **Description**         | **Input**                    | **Expected Result**          |
+| ---------------- | ------------ | ---------------------- | ----------------- | ----------------------- | ---------------------------- | ---------------------------- |
+| BTC001           | Login        | POST /api/login        | Positive          | Valid login credentials | Valid email & password       | Status 200, token returned   |
+| BTC002           | Login        | POST /api/login        | Negative          | Invalid password        | Valid email + wrong password | Status 401, error message    |
+| BTC003           | Login        | POST /api/login        | Negative          | Missing fields          | Empty email/password         | Status 400, validation error |
+| BTC004           | Registration | POST /api/register     | Positive          | Valid registration      | New user details             | Status 201, user created     |
+| BTC005           | Registration | POST /api/register     | Negative          | Duplicate email         | Existing email               | Status 409, error message    |
+| BTC006           | Registration | POST /api/register     | Negative          | Invalid email format    | Wrong email format           | Status 400, validation error |
+| BTC007           | Lost Item    | POST /api/report-lost  | Positive          | Valid item submission   | Correct item data            | Status 201, item stored      |
+| BTC008           | Lost Item    | POST /api/report-lost  | Negative          | Missing fields          | Incomplete data              | Status 400, validation error |
+| BTC009           | Lost Item    | POST /api/report-lost  | Negative          | Unauthorized access     | No token                     | Status 401, access denied    |
+| BTC010           | Found Item   | POST /api/report-found | Positive          | Valid submission        | Correct item data            | Status 201, item saved       |
+| BTC011           | Found Item   | POST /api/report-found | Negative          | Invalid input data      | Incorrect values             | Status 400, validation error |
+| BTC012           | Matching     | GET /api/matches       | Positive          | Retrieve matches        | Valid request                | Status 200, matches returned |
+| BTC013           | Matching     | GET /api/matches       | Negative          | No data available       | Empty DB                     | Status 200, empty list       |
+| BTC014           | Matching     | GET /api/matches       | Negative          | Unauthorized access     | No token                     | Status 401, access denied    |
+| BTC015           | Database     | MongoDB                | Positive          | Data stored correctly   | Valid submission             | Data matches input           |
+| BTC016           | Database     | MongoDB                | Negative          | Invalid data handling   | Incorrect input              | Data rejected / error        |
+
