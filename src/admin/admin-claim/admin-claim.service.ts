@@ -50,7 +50,7 @@ export class AdminClaimService extends SerializeService<ClaimEntity> {
     const serializedClaims = this.toJSONs(items, ClaimDto);
     const approved = serializedClaims.filter(c => c.status === ClaimStatusEnum.APPROVED);
     if (approved.length > 0) {
-      console.log('[claim:findAll] approved claims foundItemId values:', approved.map(c => ({ id: c.id, foundItemId: c.foundItemId, type: typeof c.foundItemId })));
+      console.log('[claim:findAll] approved claims foundItemId values:', approved.map(c => ({ foundItemId: c.foundItemId, type: typeof c.foundItemId })));
     }
 
     return {
