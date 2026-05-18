@@ -40,8 +40,12 @@ export class AdminHandoverService extends SerializeService<HandoverEntity> {
 
     const total = await this.handoverModel.countDocuments(filters);
 
+    const serialized = this.toJSONs(items, HandoverDto);
+    console.log('[handover:findAll] raw foundItem values:', items.map(i => ({ raw: i.foundItem, type: typeof i.foundItem, str: String(i.foundItem) })));
+    console.log('[handover:findAll] serialized foundItem values:', serialized.map(s => ({ foundItem: s.foundItem, type: typeof s.foundItem })));
+
     return {
-      items: this.toJSONs(items, HandoverDto),
+      items: serialized,
       pagination: {
         total,
         current: query.page,
@@ -62,11 +66,15 @@ export class AdminHandoverService extends SerializeService<HandoverEntity> {
   }
 
   async createOne(userId: string, body: CreateHandoverDto) {
+    console.log('[handover:createOne] body received:', JSON.stringify(body));
     const handover = await this.handoverModel.create({
       ...body,
       handedOverBy: userId,
     });
+    console.log('[handover:createOne] stored foundItem:', { raw: handover.foundItem, type: typeof handover.foundItem, str: String(handover.foundItem) });
 
-    return this.toJSON(handover, HandoverDto);
+    const result = this.toJSON(handover, HandoverDto);
+    console.log('[handover:createOne] serialized foundItem:', { foundItem: result.foundItem, type: typeof result.foundItem });
+    return result;
   }
 }
