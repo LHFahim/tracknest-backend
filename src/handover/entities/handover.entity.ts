@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Prop, Ref } from '@typegoose/typegoose';
-import { Expose, Transform } from 'class-transformer';
+import { Prop } from '@typegoose/typegoose';
+import { Expose } from 'class-transformer';
 import {
   IsDateString,
   IsMongoId,
@@ -10,8 +10,6 @@ import {
 } from 'class-validator';
 import { Model } from 'libraries/mongodb/modelOptions';
 import { DocumentWithTimeStamps } from 'src/common/classes/documentWithTimeStamps';
-import { FoundItemEntity } from 'src/found-item/entities/found-item.entity';
-import { UserEntity } from 'src/user/entities/user.entity';
 
 @Model('handovers', true)
 export class HandoverEntity extends DocumentWithTimeStamps {
@@ -19,25 +17,22 @@ export class HandoverEntity extends DocumentWithTimeStamps {
   @IsMongoId()
   @IsNotEmpty()
   @ApiProperty({ required: true, type: String })
-  @Transform(({ value }) => value?.toString())
-  @Prop({ required: true, ref: () => FoundItemEntity })
-  foundItem: Ref<FoundItemEntity>;
+  @Prop({ required: true, type: String })
+  foundItem: string;
 
   @Expose()
   @IsMongoId()
   @IsNotEmpty()
   @ApiProperty({ required: true, type: String })
-  @Transform(({ value }) => value?.toString())
-  @Prop({ required: true, ref: () => UserEntity })
-  receivedByUser: Ref<UserEntity>; // owner / normal user
+  @Prop({ required: true, type: String })
+  receivedByUser: string;
 
   @Expose()
   @IsMongoId()
   @IsNotEmpty()
   @ApiProperty({ required: true, type: String })
-  @Transform(({ value }) => value?.toString())
-  @Prop({ required: true, ref: () => UserEntity })
-  handedOverBy: Ref<UserEntity>; // staff member
+  @Prop({ required: true, type: String })
+  handedOverBy: string;
 
   @Expose()
   @IsOptional()
