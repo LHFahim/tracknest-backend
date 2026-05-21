@@ -60,12 +60,15 @@ export class LostItemService extends SerializeService<LostItemEntity> {
     };
 
     const items = await this.lostItemModel
-      .find(filters)
+      .find({ ...filters, createdBy: userId })
       .sort({ [query.sortBy]: query.sort })
       .limit(query.pageSize)
       .skip((query.page - 1) * query.pageSize);
 
-    const total = await this.lostItemModel.countDocuments(filters);
+    const total = await this.lostItemModel.countDocuments({
+      ...filters,
+      createdBy: userId,
+    });
 
     return {
       items: this.toJSONs(items, LostItemDto),
