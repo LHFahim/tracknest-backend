@@ -38,8 +38,8 @@ export class ClaimEntity extends DocumentWithTimeStamps {
   @IsNotEmpty()
   @ApiProperty({ required: true })
   @Transform(({ value }) => value?.toString())
-  @Prop({ required: true, ref: () => FoundItemEntity })
-  foundItemId: Ref<FoundItemEntity>;
+  @Prop({ required: true, type: String })
+  foundItemId: string;
 
   @Expose()
   @IsMongoId()
@@ -82,8 +82,8 @@ export class ClaimEntity extends DocumentWithTimeStamps {
   @Expose()
   @IsOptional()
   @IsDateString()
-  @ApiProperty({ required: true })
-  @Prop({ required: true })
+  @ApiProperty({ required: false })
+  @Prop({ required: false })
   reviewDate?: Date;
 
   @Expose()
