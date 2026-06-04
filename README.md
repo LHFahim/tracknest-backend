@@ -41,7 +41,7 @@ The system will make it simple and helpful to keep track of things that have bee
 | POST   | `/api/report-lost`  | Submit a lost item report          |
 | POST   | `/api/report-found` | Submit a found item report         |
 | GET    | `/api/items`        | Retrieve all reported items        |
-| GET    | `/api/matches`      | Retrieve AI-based matching results |
+| GET    | `/api/matches`      | Retrieve rule-based matching results |
 | DELETE | `/api/items/:id`    | Delete an item record              |
 
 | Method | Endpoint       | Description                |
@@ -72,23 +72,23 @@ The project uses MongoDB as the primary database system for storing and managing
 * found_items <br>
 * matches <br>
 
-# AI Component
+# Matching Component
 
-The system includes a basic AI-based matching component to improve the accuracy of identifying related lost and found items.<br>
+The system includes a rule-based matching component to improve the accuracy of identifying related lost and found items.<br>
 
-## AI Features
+## Matching Features
 * Text similarity comparison<br>
 * Keyword-based matching<br>
 * Item description comparison<br>
-* Intelligent matching suggestions<br>
+* Weighted scoring suggestions<br>
 
-## AI Technologies Used
-* Python<br>
-* Text similarity algorithms<br>
-* difflib library (or similar matching libraries)<br>
+## Matching Technologies Used
+* TypeScript<br>
+* Weighted field scoring algorithm<br>
+* Token-based text similarity<br>
 
 
-## AI Workflow
+## Matching Workflow
 * User submits lost or found item<br>
 * System compares item descriptions<br>
 * Similarity score is generated<br>

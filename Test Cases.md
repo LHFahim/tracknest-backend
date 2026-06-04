@@ -51,7 +51,7 @@ Status | Pass / Fail
 | Field | Details |
 |------|--------|
 Test Case ID | TC004
-Feature | AI Matching
+Feature | Smart Matching
 Description | Verify matching results are displayed
 Precondition | Lost & found items exist
 Test Steps | 1. Submit item<br>2. View matches

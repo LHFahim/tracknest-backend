@@ -34,7 +34,6 @@ export class ClaimEntity extends DocumentWithTimeStamps {
   @IsMongoId()
   @IsNotEmpty()
   @ApiProperty({ required: true })
-  @Transform(({ value }) => value?.toString())
   @Prop({ required: true, type: String })
   foundItemId: string;
 

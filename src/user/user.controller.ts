@@ -13,7 +13,7 @@ import { Serialize } from 'libraries/serializer/serializer.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Routes } from 'src/common/constant/routes';
 import { ResourceId } from 'src/common/decorator/params.decorator';
-import { UserId } from 'src/common/decorator/user.decorator';
+import { UserId, UserPanelType } from 'src/common/decorator/user.decorator';
 import { APIVersions } from 'src/common/enum/api-versions.enum';
 import { ControllersEnum } from 'src/common/enum/controllers.enum';
 import {
@@ -57,17 +57,22 @@ export class UserController {
   @Patch(Routes[ControllersEnum.Users].updateOne)
   update(
     @UserId() userId: string,
+    @UserPanelType() panelType: string,
     @ResourceId() id: string,
     @Body() body: UpdateUserDto,
   ) {
-    return this.userService.update(userId, id, body);
+    return this.userService.update(userId, panelType, id, body);
   }
 
   @ApiResponse({
     type: UserDto,
   })
   @Delete(Routes[ControllersEnum.Users].deleteOne)
-  remove(@UserId() userId: string, @ResourceId() id: string) {
-    return this.userService.remove(userId, id);
+  remove(
+    @UserId() userId: string,
+    @UserPanelType() panelType: string,
+    @ResourceId() id: string,
+  ) {
+    return this.userService.remove(userId, panelType, id);
   }
 }
