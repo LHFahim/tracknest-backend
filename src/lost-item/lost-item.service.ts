@@ -46,9 +46,11 @@ export class LostItemService extends SerializeService<LostItemEntity> {
   async findAll(
     userId: string,
     query: LostItemQueryDto,
+    showAll = false,
   ): Promise<LostItemPaginatedDto> {
     const filters = {
       isDeleted: false,
+      ...(!showAll && { createdBy: userId }),
       ...(query.search && {
         $or: [
           { title: new RegExp(`.*${query.search}.*`, 'i') },
@@ -60,15 +62,12 @@ export class LostItemService extends SerializeService<LostItemEntity> {
     };
 
     const items = await this.lostItemModel
-      .find({ ...filters, createdBy: userId })
+      .find(filters)
       .sort({ [query.sortBy]: query.sort })
       .limit(query.pageSize)
       .skip((query.page - 1) * query.pageSize);
 
-    const total = await this.lostItemModel.countDocuments({
-      ...filters,
-      createdBy: userId,
-    });
+    const total = await this.lostItemModel.countDocuments(filters);
 
     return {
       items: this.toJSONs(items, LostItemDto),

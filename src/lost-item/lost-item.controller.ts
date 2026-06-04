@@ -13,7 +13,7 @@ import { Serialize } from 'libraries/serializer/serializer.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Routes } from 'src/common/constant/routes';
 import { ResourceId } from 'src/common/decorator/params.decorator';
-import { UserId } from 'src/common/decorator/user.decorator';
+import { UserId, UserPanelType } from 'src/common/decorator/user.decorator';
 import { APIVersions } from 'src/common/enum/api-versions.enum';
 import { ControllersEnum } from 'src/common/enum/controllers.enum';
 import {
@@ -41,8 +41,13 @@ export class LostItemController {
   }
 
   @Get(Routes[ControllersEnum.LostItem].findAll)
-  findAll(@UserId() userId: string, @Query() query: LostItemQueryDto) {
-    return this.lostItemService.findAll(userId, query);
+  findAll(
+    @UserId() userId: string,
+    @UserPanelType() panelType: string,
+    @Query() query: LostItemQueryDto,
+  ) {
+    const showAll = panelType === 'STAFF' || panelType === 'ADMIN';
+    return this.lostItemService.findAll(userId, query, showAll);
   }
 
   @Get(Routes[ControllersEnum.LostItem].findOne)
