@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Prop, Ref } from '@typegoose/typegoose';
-import { Expose, Transform } from 'class-transformer';
+import { Prop } from '@typegoose/typegoose';
+import { Expose } from 'class-transformer';
 import {
   IsArray,
   IsDateString,
@@ -12,9 +12,6 @@ import {
 } from 'class-validator';
 import { Model } from 'libraries/mongodb/modelOptions';
 import { DocumentWithTimeStamps } from 'src/common/classes/documentWithTimeStamps';
-import { FoundItemEntity } from 'src/found-item/entities/found-item.entity';
-import { LostItemEntity } from 'src/lost-item/entities/lost-item.entity';
-import { UserEntity } from 'src/user/entities/user.entity';
 
 export enum ClaimStatusEnum {
   PENDING = 'PENDING',
@@ -45,17 +42,15 @@ export class ClaimEntity extends DocumentWithTimeStamps {
   @IsMongoId()
   @IsOptional()
   @ApiProperty({ required: false })
-  @Transform(({ value }) => value?.toString())
-  @Prop({ required: false, ref: () => LostItemEntity, default: undefined })
-  lostItemId?: Ref<LostItemEntity>;
+  @Prop({ required: false, type: String, default: undefined })
+  lostItemId?: string;
 
   @Expose()
   @IsMongoId()
   @IsNotEmpty()
   @ApiProperty({ required: true })
-  @Transform(({ value }) => value?.toString())
-  @Prop({ required: true, ref: () => UserEntity })
-  claimedBy: Ref<UserEntity>;
+  @Prop({ required: true, type: String })
+  claimedBy: string;
 
   @Expose()
   @IsNotEmpty()
@@ -68,9 +63,8 @@ export class ClaimEntity extends DocumentWithTimeStamps {
   @IsMongoId()
   @IsOptional()
   @ApiProperty({ required: false })
-  @Transform(({ value }) => value?.toString())
-  @Prop({ required: false, ref: () => UserEntity })
-  reviewedBy?: Ref<UserEntity>;
+  @Prop({ required: false, type: String })
+  reviewedBy?: string;
 
   @Expose()
   @IsString()
