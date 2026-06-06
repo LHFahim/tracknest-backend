@@ -48,6 +48,10 @@ export class ConfigService {
 
   @Section(() => AdminUserCredentials)
   adminUserCredential: AdminUserCredentials;
+
+  @IsOptional()
+  @Env('GEMINI_API_KEY')
+  GEMINI_API_KEY: string;
 }
 
 export const ParsedConfigs = parseEnv(ConfigService);

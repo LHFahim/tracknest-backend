@@ -13,6 +13,7 @@ import { FoundItemModule } from './found-item/found-item.module';
 import { ClaimModule } from './claim/claim.module';
 import { HandoverModule } from './handover/handover.module';
 import { ThreadModule } from './thread/thread.module';
+import { AiMatcherModule } from './ai-matcher/ai-matcher.module';
 
 @Module({
   imports: [
@@ -43,6 +44,8 @@ import { ThreadModule } from './thread/thread.module';
     HandoverModule,
 
     ThreadModule,
+
+    AiMatcherModule,
   ],
   controllers: [],
   providers: [AppService],
