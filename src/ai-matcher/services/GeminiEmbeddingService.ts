@@ -8,7 +8,6 @@ export class GeminiEmbeddingService {
 
   constructor(private readonly configService: ConfigService) {
     const apiKey = this.configService.GEMINI_API_KEY;
-    console.log('Gemini key exists:', !!apiKey);
 
     if (!apiKey)
       throw new InternalServerErrorException('GEMINI_API_KEY is missing');
@@ -27,10 +26,6 @@ export class GeminiEmbeddingService {
       });
 
       const embedding = response.embeddings?.[0]?.values;
-      console.log(
-        '🚀 ~ GeminiEmbeddingService ~ createEmbedding ~ embedding:',
-        embedding,
-      );
 
       if (!embedding) throw new Error('No embedding returned from Gemini');
 

@@ -2,7 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { SerializeService } from 'libraries/serializer/serialize';
 import { InjectModel } from 'nestjs-typegoose';
-import { GeminiEmbeddingService } from 'src/ai-matcher/GeminiEmbeddingService';
+import { GeminiVisionService } from 'src/ai-matcher/services/gemini-vision.service';
+import { GeminiEmbeddingService } from 'src/ai-matcher/services/GeminiEmbeddingService';
+import { lostItemsSeed } from 'src/common/seedData/lost-items.seed';
 import { cosineSimilarity } from 'src/common/utils/cosine-similarity.util';
 import { buildItemEmbeddingText } from 'src/common/utils/item-embedding-text.util';
 import {
@@ -30,12 +32,22 @@ export class LostItemService extends SerializeService<LostItemEntity> {
     @InjectModel(FoundItemEntity)
     private readonly foundItemModel: ReturnModelType<typeof FoundItemEntity>,
     private readonly geminiEmbeddingService: GeminiEmbeddingService,
+    private readonly geminiVisionService: GeminiVisionService,
   ) {
     super(LostItemEntity);
   }
 
   async create(userId: string, createLostItemDto: CreateLostItemDto) {
-    const embeddingText = buildItemEmbeddingText(createLostItemDto);
+    const imageDescription = createLostItemDto.imageURL
+      ? await this.geminiVisionService.describeImageFromUrl(
+          createLostItemDto.imageURL,
+        )
+      : '';
+
+    const embeddingText = buildItemEmbeddingText({
+      ...createLostItemDto,
+      imageDescription,
+    });
 
     const descriptionEmbedding =
       await this.geminiEmbeddingService.createEmbedding(embeddingText);
@@ -49,6 +61,7 @@ export class LostItemService extends SerializeService<LostItemEntity> {
       },
 
       descriptionEmbedding,
+      imageDescription,
 
       status: LostItemStatusEnum.OPEN,
       createdBy: userId,
@@ -218,8 +231,26 @@ export class LostItemService extends SerializeService<LostItemEntity> {
       .sort((a, b) => b.score - a.score)
       .slice(0, 5);
 
-    console.log('matches', matches);
-
     return matches;
+  }
+
+  async onModuleInit() {
+    await this.seedLostItems();
+  }
+
+  private async seedLostItems() {
+    for (const seedItem of lostItemsSeed) {
+      const alreadyExists = await this.lostItemModel.exists({
+        _id: seedItem._id,
+      });
+
+      if (alreadyExists) {
+        continue;
+      }
+
+      await this.create('69c6906212e81e4e20a548d5', seedItem);
+    }
+
+    console.log('Lost item seed completed');
   }
 }

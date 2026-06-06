@@ -18,6 +18,10 @@ export class ItemEmbeddingTextInput {
   @IsNotEmpty()
   description: string;
 
+  @IsString()
+  @IsOptional()
+  imageDescription?: string;
+
   @IsOptional()
   @IsString()
   brand?: string;
@@ -54,6 +58,9 @@ export function buildItemEmbeddingText(item: ItemEmbeddingTextInput): string {
     item.itemType ? `Item type: ${item.itemType}` : undefined,
     `Title: ${item.title}`,
     `Description: ${item.description}`,
+    item.imageDescription
+      ? `Image description: ${item.imageDescription}`
+      : undefined,
     item.category ? `Category: ${item.category}` : undefined,
     item.brand ? `Brand: ${item.brand}` : undefined,
     item.color ? `Color: ${item.color}` : undefined,

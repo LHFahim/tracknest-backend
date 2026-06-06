@@ -3,7 +3,9 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { SerializeService } from 'libraries/serializer/serialize';
 import { InjectModel } from 'nestjs-typegoose';
 
-import { GeminiEmbeddingService } from 'src/ai-matcher/GeminiEmbeddingService';
+import { GeminiVisionService } from 'src/ai-matcher/services/gemini-vision.service';
+import { GeminiEmbeddingService } from 'src/ai-matcher/services/GeminiEmbeddingService';
+import { foundItemsSeed } from 'src/common/seedData/found-item.seed';
 import { buildItemEmbeddingText } from 'src/common/utils/item-embedding-text.util';
 import {
   CreateFoundItemDto,
@@ -24,12 +26,17 @@ export class FoundItemService extends SerializeService<FoundItemEntity> {
     @InjectModel(FoundItemEntity)
     private readonly foundItemModel: ReturnModelType<typeof FoundItemEntity>,
     private readonly geminiEmbeddingService: GeminiEmbeddingService,
+    private readonly geminiVisionService: GeminiVisionService,
   ) {
     super(FoundItemEntity);
   }
 
   async create(userId: string, body: CreateFoundItemDto) {
-    const embeddingText = buildItemEmbeddingText(body);
+    const imageDescription = body.images?.[0]
+      ? await this.geminiVisionService.describeImageFromUrl(body.images[0])
+      : '';
+
+    const embeddingText = buildItemEmbeddingText({ ...body, imageDescription });
 
     const descriptionEmbedding =
       await this.geminiEmbeddingService.createEmbedding(embeddingText);
@@ -45,6 +52,7 @@ export class FoundItemService extends SerializeService<FoundItemEntity> {
         : undefined,
 
       descriptionEmbedding,
+      imageDescription,
 
       status: FoundItemStatusEnum.REPORTED,
       foundBy: userId,
@@ -163,5 +171,25 @@ export class FoundItemService extends SerializeService<FoundItemEntity> {
     });
 
     return true;
+  }
+
+  async onModuleInit() {
+    await this.seedFoundItems();
+  }
+
+  private async seedFoundItems() {
+    for (const seedItem of foundItemsSeed) {
+      const alreadyExists = await this.foundItemModel.exists({
+        _id: seedItem._id,
+      });
+
+      if (alreadyExists) {
+        continue;
+      }
+
+      await this.create('69c6906212e81e4e20a548d5', seedItem);
+    }
+
+    console.log('Found item seed completed');
   }
 }

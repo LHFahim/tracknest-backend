@@ -149,11 +149,21 @@ export class FoundItemEntity extends DocumentWithTimeStamps {
   @ApiProperty({ required: true, type: String })
   foundBy: Types.ObjectId;
 
-  // for AI matching
+  /* for AI matching fields */
+
+  @Exclude()
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ required: false })
+  @Prop({ required: false, trim: true })
+  imageDescription?: string;
+
   @Exclude()
   @ApiProperty({ required: false, type: [Number] })
   @Prop({ required: false, type: () => [Number], default: [] })
   descriptionEmbedding?: number[];
+
+  /* for AI matching fields */
 
   @Expose()
   @Prop({ required: false, type: Boolean, default: true })

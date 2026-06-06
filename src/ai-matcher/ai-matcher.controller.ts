@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { AiMatcherService } from './ai-matcher.service';
+import { AiMatcherService } from './services/ai-matcher.service';
 
 @Controller('ai-matcher')
 export class AiMatcherController {
