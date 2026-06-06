@@ -122,6 +122,12 @@ export class LostItemEntity extends DocumentWithTimeStamps {
   @Prop({ required: false, trim: true })
   imageURL?: string;
 
+  // for AI matching
+  @Expose()
+  @ApiProperty({ required: false, type: [Number] })
+  @Prop({ required: false, type: () => [Number], default: [] })
+  descriptionEmbedding?: number[];
+
   @Expose()
   @IsMongoId()
   @Type(() => String)

@@ -149,6 +149,12 @@ export class FoundItemEntity extends DocumentWithTimeStamps {
   @ApiProperty({ required: true, type: String })
   foundBy: Types.ObjectId;
 
+  // for AI matching
+  @Expose()
+  @ApiProperty({ required: false, type: [Number] })
+  @Prop({ required: false, type: () => [Number], default: [] })
+  descriptionEmbedding?: number[];
+
   @Expose()
   @Prop({ required: false, type: Boolean, default: true })
   isPublic: boolean;
