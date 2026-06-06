@@ -39,3 +39,42 @@ export class LostItemPaginatedDto {
   @Expose()
   pagination: PaginationDto;
 }
+
+import { Type } from 'class-transformer';
+import { IsArray, IsDate, IsNumber, IsString, Max, Min } from 'class-validator';
+
+export class AIMatchResponseDto {
+  @IsMongoId()
+  foundItemId: string;
+
+  @IsString()
+  title: string;
+
+  @IsString()
+  description: string;
+
+  @IsMongoId()
+  category: string;
+
+  @IsString()
+  brand: string;
+
+  @IsString()
+  color: string;
+
+  @IsString()
+  locationFound: string;
+
+  @Type(() => Date)
+  @IsDate()
+  dateFound: Date;
+
+  @IsArray()
+  @IsString({ each: true })
+  images: string[];
+
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  score: number;
+}

@@ -202,10 +202,10 @@ export class LostItemService extends SerializeService<LostItemEntity> {
         const score = Math.round(similarity * 100);
 
         return {
-          foundItemId: foundItem._id,
+          foundItemId: foundItem._id.toString(),
           title: foundItem.title,
           description: foundItem.description,
-          category: foundItem.category,
+          category: foundItem.category.toString(),
           brand: foundItem.brand,
           color: foundItem.color,
           locationFound: foundItem.locationFound,
@@ -217,6 +217,8 @@ export class LostItemService extends SerializeService<LostItemEntity> {
       .filter((match) => match.score >= 60)
       .sort((a, b) => b.score - a.score)
       .slice(0, 5);
+
+    console.log('matches', matches);
 
     return matches;
   }

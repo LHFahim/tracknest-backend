@@ -17,6 +17,7 @@ import { UserId, UserPanelType } from 'src/common/decorator/user.decorator';
 import { APIVersions } from 'src/common/enum/api-versions.enum';
 import { ControllersEnum } from 'src/common/enum/controllers.enum';
 import {
+  AIMatchResponseDto,
   CreateLostItemDto,
   LostItemQueryDto,
   UpdateLostItemDto,
@@ -79,7 +80,10 @@ export class LostItemController {
   }
 
   @Get(Routes[ControllersEnum.LostItem].findMatches)
-  async findMatches(@UserId() userId: string, @ResourceId() id: string) {
+  async findMatches(
+    @UserId() userId: string,
+    @ResourceId() id: string,
+  ): Promise<AIMatchResponseDto[]> {
     return this.lostItemService.findPossibleMatches(userId, id);
   }
 }
