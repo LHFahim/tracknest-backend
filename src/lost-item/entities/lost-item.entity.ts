@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ModelOptions, Prop, Ref } from '@typegoose/typegoose';
-import { Expose, Transform, Type } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import {
   IsDateString,
   IsEnum,
@@ -30,7 +30,6 @@ export class GPSLocation {
   latitude: number;
 
   @Expose()
-  @IsString()
   @IsNumber()
   @ApiProperty({ required: true })
   @Prop({ required: true })
@@ -123,7 +122,7 @@ export class LostItemEntity extends DocumentWithTimeStamps {
   imageURL?: string;
 
   // for AI matching
-  @Expose()
+  @Exclude()
   @ApiProperty({ required: false, type: [Number] })
   @Prop({ required: false, type: () => [Number], default: [] })
   descriptionEmbedding?: number[];

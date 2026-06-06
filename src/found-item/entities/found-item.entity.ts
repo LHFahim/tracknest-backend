@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Prop, Ref } from '@typegoose/typegoose';
-import { Expose, Transform, Type } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import {
   IsDateString,
   IsEnum,
@@ -150,7 +150,7 @@ export class FoundItemEntity extends DocumentWithTimeStamps {
   foundBy: Types.ObjectId;
 
   // for AI matching
-  @Expose()
+  @Exclude()
   @ApiProperty({ required: false, type: [Number] })
   @Prop({ required: false, type: () => [Number], default: [] })
   descriptionEmbedding?: number[];
