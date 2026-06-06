@@ -3,6 +3,8 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { SerializeService } from 'libraries/serializer/serialize';
 import { InjectModel } from 'nestjs-typegoose';
 
+import { GeminiEmbeddingService } from 'src/ai-matcher/GeminiEmbeddingService';
+import { buildItemEmbeddingText } from 'src/common/utils/item-embedding-text.util';
 import {
   CreateFoundItemDto,
   FoundItemDto,
@@ -21,11 +23,17 @@ export class FoundItemService extends SerializeService<FoundItemEntity> {
   constructor(
     @InjectModel(FoundItemEntity)
     private readonly foundItemModel: ReturnModelType<typeof FoundItemEntity>,
+    private readonly geminiEmbeddingService: GeminiEmbeddingService,
   ) {
     super(FoundItemEntity);
   }
 
   async create(userId: string, body: CreateFoundItemDto) {
+    const embeddingText = buildItemEmbeddingText(body);
+
+    const descriptionEmbedding =
+      await this.geminiEmbeddingService.createEmbedding(embeddingText);
+
     const foundItem = await this.foundItemModel.create({
       ...body,
 
@@ -35,6 +43,8 @@ export class FoundItemService extends SerializeService<FoundItemEntity> {
             longitude: body.gpsLocation.longitude,
           }
         : undefined,
+
+      descriptionEmbedding,
 
       status: FoundItemStatusEnum.REPORTED,
       foundBy: userId,

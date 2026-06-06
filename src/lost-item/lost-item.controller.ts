@@ -77,4 +77,9 @@ export class LostItemController {
   deleteOne(@UserId() userId: string, @ResourceId() id: string) {
     return this.lostItemService.deleteOne(userId, id);
   }
+
+  @Get(Routes[ControllersEnum.LostItem].findMatches)
+  async findMatches(@UserId() userId: string, @ResourceId() id: string) {
+    return this.lostItemService.findPossibleMatches(userId, id);
+  }
 }

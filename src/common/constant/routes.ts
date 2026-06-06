@@ -72,6 +72,7 @@ export const Routes = {
     updateOne: ':id',
     updateStatus: ':id/status',
     deleteOne: ':id',
+    findMatches: ':id/ai-matches',
   },
 
   [ControllersEnum.FoundItem]: {

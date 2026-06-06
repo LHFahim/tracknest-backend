@@ -2,6 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { SerializeService } from 'libraries/serializer/serialize';
 import { InjectModel } from 'nestjs-typegoose';
+import { GeminiEmbeddingService } from 'src/ai-matcher/GeminiEmbeddingService';
+import { cosineSimilarity } from 'src/common/utils/cosine-similarity.util';
+import { buildItemEmbeddingText } from 'src/common/utils/item-embedding-text.util';
+import {
+  FoundItemEntity,
+  FoundItemStatusEnum,
+} from 'src/found-item/entities/found-item.entity';
 import {
   CreateLostItemDto,
   LostItemDto,
@@ -20,11 +27,19 @@ export class LostItemService extends SerializeService<LostItemEntity> {
   constructor(
     @InjectModel(LostItemEntity)
     private readonly lostItemModel: ReturnModelType<typeof LostItemEntity>,
+    @InjectModel(FoundItemEntity)
+    private readonly foundItemModel: ReturnModelType<typeof FoundItemEntity>,
+    private readonly geminiEmbeddingService: GeminiEmbeddingService,
   ) {
     super(LostItemEntity);
   }
 
   async create(userId: string, createLostItemDto: CreateLostItemDto) {
+    const embeddingText = buildItemEmbeddingText(createLostItemDto);
+
+    const descriptionEmbedding =
+      await this.geminiEmbeddingService.createEmbedding(embeddingText);
+
     const lostItem = await this.lostItemModel.create({
       ...createLostItemDto,
 
@@ -32,6 +47,8 @@ export class LostItemService extends SerializeService<LostItemEntity> {
         latitude: createLostItemDto.gpsLocation.latitude,
         longitude: createLostItemDto.gpsLocation.longitude,
       },
+
+      descriptionEmbedding,
 
       status: LostItemStatusEnum.OPEN,
       createdBy: userId,
@@ -155,5 +172,52 @@ export class LostItemService extends SerializeService<LostItemEntity> {
     await lostItem.save();
 
     return true;
+  }
+
+  async findPossibleMatches(userId: string, lostItemId: string) {
+    const lostItem = await this.lostItemModel.findById(lostItemId).lean();
+
+    if (!lostItem) throw new NotFoundException('Lost item not found');
+
+    if (!lostItem.descriptionEmbedding?.length) return [];
+
+    const foundItems = await this.foundItemModel
+      .find({
+        isDeleted: false,
+        isActive: true,
+        isPublic: true,
+        status: {
+          $in: [FoundItemStatusEnum.REPORTED, FoundItemStatusEnum.IN_CUSTODY],
+        },
+      })
+      .lean();
+
+    const matches = foundItems
+      .map((foundItem) => {
+        const similarity = cosineSimilarity(
+          lostItem.descriptionEmbedding,
+          foundItem.descriptionEmbedding || [],
+        );
+
+        const score = Math.round(similarity * 100);
+
+        return {
+          foundItemId: foundItem._id,
+          title: foundItem.title,
+          description: foundItem.description,
+          category: foundItem.category,
+          brand: foundItem.brand,
+          color: foundItem.color,
+          locationFound: foundItem.locationFound,
+          dateFound: foundItem.dateFound,
+          images: foundItem.images,
+          score,
+        };
+      })
+      .filter((match) => match.score >= 60)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
+
+    return matches;
   }
 }
