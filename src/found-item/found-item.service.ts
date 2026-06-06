@@ -3,8 +3,8 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { SerializeService } from 'libraries/serializer/serialize';
 import { InjectModel } from 'nestjs-typegoose';
 
+import { GeminiEmbeddingService } from 'src/ai-matcher/services/gemini-embedding.service';
 import { GeminiVisionService } from 'src/ai-matcher/services/gemini-vision.service';
-import { GeminiEmbeddingService } from 'src/ai-matcher/services/GeminiEmbeddingService';
 import { foundItemsSeed } from 'src/common/seedData/found-item.seed';
 import { buildItemEmbeddingText } from 'src/common/utils/item-embedding-text.util';
 import {

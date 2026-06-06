@@ -13,7 +13,7 @@ export class GeminiVisionService {
   constructor(private readonly configService: ConfigService) {
     const apiKey = this.configService.GEMINI_API_KEY;
 
-    if (!apiKey) throw new Error('GEMINI_API_KEY is missing');
+    if (!apiKey) throw new BadRequestException('GEMINI_API_KEY is missing');
 
     this.ai = new GoogleGenAI({ apiKey });
   }
