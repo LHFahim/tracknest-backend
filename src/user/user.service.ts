@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { SerializeService } from 'libraries/serializer/serialize';
 import { InjectModel } from 'nestjs-typegoose';
@@ -82,7 +86,23 @@ export class UserService extends SerializeService<UserEntity> {
     // return this.toJSON(user, UserDto);
   }
 
-  async update(userId: string, id: string, body: UpdateUserDto) {
+  async update(
+    userId: string,
+    panelType: string,
+    id: string,
+    body: UpdateUserDto,
+  ) {
+    // A normal user may only update their own profile.
+    // Staff and admins may update any user record.
+    const isPrivileged =
+      panelType === PanelType.STAFF || panelType === PanelType.ADMIN;
+
+    if (!isPrivileged && userId !== id) {
+      throw new ForbiddenException(
+        'You are not permitted to update another user account',
+      );
+    }
+
     const user = await this.userModel.findOneAndUpdate(
       { _id: id },
       { ...body },
@@ -93,7 +113,17 @@ export class UserService extends SerializeService<UserEntity> {
     return this.toJSON(user, UserDto);
   }
 
-  async remove(userId: string, id: string) {
+  async remove(userId: string, panelType: string, id: string) {
+    // Only staff and admins may deactivate (delete) user accounts.
+    const isPrivileged =
+      panelType === PanelType.STAFF || panelType === PanelType.ADMIN;
+
+    if (!isPrivileged) {
+      throw new ForbiddenException(
+        'You are not permitted to delete user accounts',
+      );
+    }
+
     const user = await this.userModel.findOneAndUpdate(
       { _id: id },
       { isActive: false, isDeleted: true },

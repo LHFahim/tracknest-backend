@@ -65,15 +65,12 @@ export class FoundItemService extends SerializeService<FoundItemEntity> {
     };
 
     const items = await this.foundItemModel
-      .find({ ...filters, foundBy: userId })
+      .find(filters)
       .sort({ [query.sortBy]: query.sort })
       .limit(query.pageSize)
       .skip((query.page - 1) * query.pageSize);
 
-    const total = await this.foundItemModel.countDocuments({
-      ...filters,
-      foundBy: userId,
-    });
+    const total = await this.foundItemModel.countDocuments(filters);
 
     return {
       items: this.toJSONs(items, FoundItemDto),

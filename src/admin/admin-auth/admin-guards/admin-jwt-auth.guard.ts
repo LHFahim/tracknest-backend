@@ -42,7 +42,7 @@ export class AdminJwtAuthGuard implements CanActivate {
     const user = await this.authService.getAuthUser(accessTokenData.id);
     if (!user) throw new UnauthorizedException('Unauthorized');
 
-    if (user.panelType !== PanelType.ADMIN)
+    if (user.panelType !== PanelType.ADMIN && user.panelType !== PanelType.STAFF)
       throw new BadRequestException('Route permission denied');
 
     if (!user.isActive) throw new HttpException('Account Inactive', 423);
