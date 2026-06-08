@@ -199,6 +199,7 @@ export class LostItemService extends SerializeService<LostItemEntity> {
         isDeleted: false,
         isActive: true,
         isPublic: true,
+        category: lostItem.category,
         status: {
           $in: [FoundItemStatusEnum.REPORTED, FoundItemStatusEnum.IN_CUSTODY],
         },
@@ -227,7 +228,7 @@ export class LostItemService extends SerializeService<LostItemEntity> {
           score,
         };
       })
-      .filter((match) => match.score >= 60)
+      .filter((match) => match.score >= 70)
       .sort((a, b) => b.score - a.score)
       .slice(0, 5);
 
